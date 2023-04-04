@@ -4,8 +4,8 @@ class Parking
 
 public:
 	Parking();
-	Parking(int X, int Y, bool lights);
-	void setFree(int i, int j, bool f);
+	Parking(int X, int Y);
+	void setFree(int i, int j,std::string direction);
 	int getY();
 	int getX();
 	bool isFree(int x, int y);
@@ -15,15 +15,14 @@ public:
 	std::string getPath();
 
 
-	bool turnOn(Parking& n);
-	bool turnOff(Parking& n);
+	
 	bool goUp(Parking& n);
 	bool goDown(Parking& n);
 	bool goLeft(Parking& n);
 	bool goRight(Parking& n);
 private:
 	int robX, robY;
-	bool lights;
+
 	bool free[12][12];
 	std::string actionName;
     Parking* prev;
