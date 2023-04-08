@@ -1,110 +1,104 @@
+
 #include <iostream>
 #include "Parking.h"
 
 
 Parking::Parking()
 {
-    std::cout << "Parking cpp!\n";
-}
-Parking::Parking(int x,int y)
-{
-    setX(x);
-    setY(y);
+    width_ = 4;
+    height_= 3;
 
-    for(int i=0;i<x;i++)
+    for (int i = 0; i < height_; ++i)
     {
-        for(int j=0;j<y;j++)
-        {
+        grid_[i].resize(width_, 1); // Initialize each row with default value of 1 (free space)
+    }
 
-            free[i][j]=true;
+}
+Parking::Parking(int width, int height)
+{
 
-        }
+    width_ = width;
+    height_ = height;
+    grid_.resize(height);
+    std::cout << "Parking cpp1!\n";
+    for (int i = 0; i < height; ++i)
+    {
 
+        grid_[i].resize(width, 1); // Initialize each row with default value of 1 (free space)
+        std::cout << "Parking cpp!\n";
     }
 }
-void Parking::setCar(int x, int y) {
-    free[x-1][y-1]=2;
+void Parking::setActionName(const std::string &action) {
+    actionName_=action;
 }
-void Parking::setRock(int x,int y)
+void Parking:: setCar(int x, int y)
 {
-    free[x-1][y-1]=false;
-
+grid_[x][y]=2;
+}// Set a location as car
+int Parking::getHeight() const {return height_;}
+int Parking::getWidth() const {return width_;}
+void Parking::setObstacle(int x, int y) {
+    grid_[x][y]=0;
+}
+void Parking::clearCell(int x, int y) {
+    grid_[x][y]=1;
+}
+int Parking::getCell(int x, int y) const {
+    return grid_[x][y];
 }
 
-int Parking::getFree(int x,int y) {
-    return free[x-1][y-1];
-}
-
-
-void Parking::setX(int x) {
-    robX=x;
-}
-void Parking::setY(int y) {
-    robY=y;
-}
-int Parking::getX() {
-    return robX;
-}
-int Parking::getY() {
-    return robY;
-}
-void Parking::setActionName(std::string x) {actionName=x;}
-void Parking::setPrev(Parking *p) {prev=p;}
-void Parking::setFree(int i, int j)
-{
-free[i][j]=true;
-}
-
-bool Parking:: goUp(Parking &n)
-{
-    if (getY()>0 && isFree(getX(),getY()+1))
-    {
-        n=*this;
-        n.setY(n.getY()+1);
-        n.setActionName("Up");
-        n.setPrev(this);
-        return true;
+std::string Parking::getPath() const {
+    if (prev_ == nullptr) {
+        return ""; // Return empty string if no previous state
+    } else {
+        return prev_->getPath() + actionName_ + " "; // Recursively get path from previous state and
     }
-    return false;
 }
-bool Parking::goLeft(Parking &n)
-{
-    if (getX()>0 && isFree(getX()-1,getY()))
-    {
-        n=*this;
-        n.setX(n.getX()-1);
-        n.setActionName("Left");
-        n.setPrev(this);
-        return true;
-    }
-    return false;
-}
-bool Parking:: goDown(Parking &n)
-{
-    if (getY()>0 && isFree(getX(),getY()-1))
-    {
-        n=*this;
-        n.setY(n.getY()-1);
-        n.setActionName("Down");
-        n.setPrev(this);
-        return true;
-    }
-    return false;
+  bool Parking::isFree(int x, int y) const {
+    return grid_[x][y]==1;
 }
 
-bool Parking:: goRight(Parking &n)
-{
-    if (getX()>0 && isFree(getX()+1,getY()))
-    {
-        n=*this;
-        n.setX(n.getX()+1);
-        n.setActionName("Right");
-        n.setPrev(this);
-        return true;
-    }
-    return false;
+bool Parking::isObstacle(int x, int y)const {
+    return grid_[x][y]==0;
 }
-bool Parking::isFree(int x, int y) {
 
-    return free[x][y];
+bool Parking::isCar(int x, int y)const {
+    return grid_[x][y]==2;
 }
+void Parking::addCar(Car car) {
+    setCar(car.getX(),car.getY());
+    cars.push_back(car);
+}
+std::vector<Car> Parking::getCars() {
+    return cars;
+}
+
+void Parking::moveCarUp(Car car) {
+    // implement moveUp() function
+    // update x coordinate to move up by 1 unit
+//Need setCars so we can change the Vector
+    //car.MoveUp();
+
+
+}
+
+void Parking::moveCarRight(Car car)  {
+    // implement moveRight() function
+    // update y coordinate to move right by 1 unit
+
+}
+
+void Parking::moveCarDown(Car car) {
+    // implement moveDown() function
+    // update x coordinate to move down by 1 unit
+
+}
+
+void Parking::moveCarLeft(Car car) {
+    // implement moveLeft() function
+    // update y coordinate to move left by 1 unit
+
+}
+
+
+
