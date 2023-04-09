@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <queue>
+#include <unordered_set>
 #include "Parking.h"
 
 
@@ -72,33 +74,168 @@ void Parking::addCar(Car car) {
 std::vector<Car> Parking::getCars() {
     return cars;
 }
+void Parking::setCars(std::vector<Car> v) {cars=v;}
 
-void Parking::moveCarUp(Car car) {
-    // implement moveUp() function
-    // update x coordinate to move up by 1 unit
-//Need setCars so we can change the Vector
-    //car.MoveUp();
+bool Parking::moveCarUp(int car, std::vector<Car> p) {
 
+    if(p.at(car).getX()-1<0 ||p.at(car).getX()-1>getWidth())
+    {
+        clearCell(p.at(car).getX(),p.at(car).getY());
+        std::cout<< car<<" Car left";
+        p.erase(p.begin()+car);
+        setCars(p);
+        return true;
+
+    }
+    if(getCell(p.at(car).getX()-1,p.at(car).getY())==0 || getCell(p.at(car).getX()-1,p.at(car).getY())==2 )
+    {
+  std:: cout<<"Cannot move up";
+return false;
+    }
+    clearCell(p.at(car).getX(),p.at(car).getY());
+    Car car1= Car(p.at(car).getX()-1,p.at(car).getY(),p.at(0).getDirection());
+    setCar(p.at(car).getX()-1,p.at(car).getY());
+    p.at(car)=car1;
+
+    setCars(p);
+return true;
 
 }
 
-void Parking::moveCarRight(Car car)  {
+bool Parking::moveCarRight(int car, std::vector<Car> p)  {
     // implement moveRight() function
     // update y coordinate to move right by 1 unit
+if(p.at(car).getY()+1<0 || p.at(car).getY()+1>getHeight())
+{
+    clearCell(p.at(car).getX(),p.at(car).getY());
+    std::cout<< car<<" Car left";
+    p.erase(p.begin()+car);
+    setCars(p);
+    return  true;
+}
+
+    if(getCell(p.at(car).getX(),p.at(car).getY()+1)==0 || getCell(p.at(car).getX(),p.at(car).getY()+1)==2 )
+    {
+        std:: cout<<"Cannot move right";
+        return false;
+    }
+    clearCell(p.at(car).getX(),p.at(car).getY());
+    Car car1= Car(p.at(car).getX(),p.at(car).getY()+1,p.at(0).getDirection());
+    setCar(p.at(car).getX(),p.at(car).getY()+1);
+    p.at(car)=car1;
+    setCars(p);
+    return true;
 
 }
 
-void Parking::moveCarDown(Car car) {
+bool Parking::moveCarDown(int car, std::vector<Car> p) {
     // implement moveDown() function
     // update x coordinate to move down by 1 unit
+    if(p.at(car).getX()+1<0 ||p.at(car).getX()+1>getWidth())
+    {
+        clearCell(p.at(car).getX(),p.at(car).getY());
+        std::cout<< car<<" Car left";
+        p.erase(p.begin()+car);
+        setCars(p);
+        return true;
+    }
+    if(getCell(p.at(car).getX()+1,p.at(car).getY())==0 || getCell(p.at(car).getX()+1,p.at(car).getY())==2)
+    {
+        std:: cout<<"Cannot move down";
+        return false;
+    }
+
+    clearCell(p.at(car).getX(),p.at(car).getY());
+    Car car1= Car(p.at(car).getX()+1,p.at(car).getY(),p.at(0).getDirection());
+    setCar(p.at(car).getX()+1,p.at(car).getY());
+    p.at(car)=car1;
+    setCars(p);
+    return true;
 
 }
 
-void Parking::moveCarLeft(Car car) {
+bool Parking::moveCarLeft(int car, std::vector<Car> p) {
     // implement moveLeft() function
     // update y coordinate to move left by 1 unit
+    if(p.at(car).getY()-1<0 || p.at(car).getY()-1>getHeight())
+    {
+        clearCell(p.at(car).getX(),p.at(car).getY());
+        std::cout<< car<<" Car left";
+        p.erase(p.begin()+car);
+        setCars(p);
+        return true;
+    }
+    if(getCell(p.at(car).getX(),p.at(car).getY()-1)==0 ||getCell(p.at(car).getX(),p.at(car).getY()-1)==2 )
+    {
+        std:: cout<<"Cannot move left";
+        return false;
+    }
+    clearCell(p.at(car).getX(),p.at(car).getY());
+    Car car1= Car(p.at(car).getX(),p.at(car).getY()-1,p.at(0).getDirection());
+    setCar(p.at(car).getX(),p.at(car).getY()-1);
+    p.at(car)=car1;
+    setCars(p);
+    return true;
 
 }
+std::vector<Parking*> Parking::expand(int x)
+{
+    std::vector<Parking*> children;
+    Parking *child;
 
+    child= new Parking(*this);
+    if(child->moveCarUp(x,child->getCars()))
+    {
+        children.push_back(child);
+
+    }
+    else
+    {
+        delete child;
+
+    }
+    child= new Parking(*this);
+    if(child->moveCarDown(x,child->getCars()))
+    {
+        children.push_back(child);
+
+    }
+    else
+    {
+        delete child;
+
+    }
+
+    child= new Parking(*this);
+
+    if(child->moveCarRight(x,child->getCars()))
+    {
+
+        children.push_back(child);
+        delete child;
+    }
+    else
+    {
+        delete child;
+
+    }
+    child= new Parking(*this);
+    if(child->moveCarLeft(x,child->getCars()))
+    {
+
+        children.push_back(child);
+
+    }
+    else
+    {
+        delete child;
+
+    }
+
+
+
+    return children;
+
+}
 
 

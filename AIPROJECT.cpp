@@ -24,14 +24,15 @@ int main() {
         std::cout << std::endl;
     }
 
-//setCars ++
-    std::cout << std::endl;
 
-    for (int i = 0; i < parking.getHeight(); ++i) {
-        for (int j = 0; j < parking.getWidth(); ++j) {
-            std::cout << parking.getCell(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
+
+//setCars ++
+   // std::cout << parking.getCars().at(0).getX();
+   // std::cout <<parking.moveCarUp(0,parking.getCars())<< std::endl;
+//parking.moveCarUp(0,parking.getCars());
+    //std::cout << std::endl;
+   std::cout << parking.expand(2).at(0)<<"<--";
+
+
     return 0;
 }

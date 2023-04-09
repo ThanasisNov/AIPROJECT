@@ -21,13 +21,20 @@ public:
     std::string getPath() const; // Get the path taken in the parking space
      void addCar(Car car);
      std::vector<Car> getCars();
+     void setCars(std::vector<Car> v);
     bool isFree(int x, int y) const; // Check if a location is free
     bool isObstacle(int x, int y) const; // Check if a location is an obstacle
     bool isCar(int x, int y) const; // Check if a location has a car
-  void moveCarUp(Car car);
-  void moveCarDown(Car car);
-  void moveCarLeft(Car car);
-  void moveCarRight(Car car);
+std::vector<Parking*> expand( int x);
+
+    bool moveCarUp(int car, std::vector<Car>);
+    bool moveCarDown(int car, std::vector<Car>);
+    bool moveCarLeft(int car, std::vector<Car>);
+   bool  moveCarRight(int car, std::vector<Car>);
+Parking *BFS(Parking * in,Parking *go);
+
+
+
 private:
     int width_; // Width of the parking space
     int height_; // Height of the parking space
